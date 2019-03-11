@@ -27,7 +27,8 @@ if [ -e surge.config ]; then
     SURGE=$(cat surge.config)
 else
     echo "what name should the website have?"
-    read SURGE
+    read surgename
+    SURGE="$surgename"
     echo "please make sure that $SURGE.surge.sh doesnt already exist. If it is a taken domain, delete surge.config and start again"
     echo "$SURGE" >surge.config
 fi
@@ -45,3 +46,6 @@ while read p; do
 done <list.txt
 
 curl https://raw.githubusercontent.com/paperbenni/storagesite/master/index2.html >>index.html
+#actually run surge
+surge . "$SURGE".surge.sh
+echo "site published at $SURGE.surge.sh"
