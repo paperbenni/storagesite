@@ -24,18 +24,6 @@ else
     echo "$SURGE" >surge.config
 fi
 
-find -type f >list.txt
-
-wget https://raw.githubusercontent.com/paperbenni/storagesite/master/index.html
-
-while read p; do
-    if [ "$p" = "surge.config" ] || [ "$p" = "index.html" ]; then
-        continue
-    fi
-    FILENAME=${p#./}
-    echo "<a href=\"$FILENAME\">$FILENAME</a>" >>index.html
-done <list.txt
-
 https://raw.githubusercontent.com/paperbenni/storagesite/master/apindex >apindex
 chmod +x apindex
 ./apindex
