@@ -1,15 +1,6 @@
 #!/usr/bin/env bash
 
-pb() {
-    if [ -z "$@" ]; then
-        echo "usage: pb bashfile"
-    fi
-    for FILE in "$@"; do
-        curl "https://raw.githubusercontent.com/paperbenni/bash/master/$1" >temp.sh
-        source temp.sh
-        rm temp.sh
-    done
-}
+source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
 
 pb install/install.sh
 
@@ -45,7 +36,10 @@ while read p; do
     echo "<a href=\"$FILENAME\">$FILENAME</a>" >>index.html
 done <list.txt
 
-curl https://raw.githubusercontent.com/paperbenni/storagesite/master/index2.html >>index.html
+https://raw.githubusercontent.com/paperbenni/storagesite/master/apindex >apindex
+chmod +x apindex
+./apindex
+rm apindex
 #actually run surge
 surge . "$SURGE".surge.sh
 echo "site published at $SURGE.surge.sh"
