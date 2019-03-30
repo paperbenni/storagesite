@@ -15,13 +15,13 @@ if ! surge --version >/dev/null; then
 fi
 
 if ! [ -e surge.config ]; then
-    echo "what name should the website have?"
-    dialog --inputbox "Enter your password:" 8 40 2>surge.config
+    dialog --inputbox "Enter the site name:" 8 40 2>surge.config
 fi
 
 SURGE=$(cat surge.config)
 echo "please make sure that $SURGE.surge.sh doesnt already exist. If it is a taken domain, delete surge.config and start again"
 rm surge.config
+rm index.html
 curl https://raw.githubusercontent.com/paperbenni/storagesite/master/apindex | python3 /dev/stdin .
 #actually run surge
 surge . "$SURGE.surge.sh"
