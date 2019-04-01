@@ -14,15 +14,29 @@ if ! surge --version >/dev/null; then
     surge login
 fi
 
+touch surge.config
 if ! [ -e surge.config ]; then
-    dialog --inputbox "Enter the site name:" 8 40 2>surge.config
+    while test -z $(cat surge.config); do
+
+        dialog --inputbox "Enter the site name:" 8 40 2>surge.config
+    done
 fi
 
 SURGE=$(cat surge.config)
 echo "please make sure that $SURGE.surge.sh doesnt already exist. If it is a taken domain, delete surge.config and start again"
-rm surge.config
-rm index.html
-curl https://raw.githubusercontent.com/paperbenni/storagesite/master/apindex | python3 /dev/stdin .
+if ! command -v apindex; then
+    (
+        command -v cmake
+        command -v git
+    ) || (echo "please install git and cmake" && exit 1)
+    git clone --depth=1 https://github.com/libthinkpad/apindex.git
+    cd apindex
+    cmake . -DCMAKE_INSTALL_PREFIX=/usr
+    sudo make install
+fi
+
+apindex .
+
 #actually run surge
 surge . "$SURGE.surge.sh"
 echo ''
