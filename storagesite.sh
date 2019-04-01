@@ -33,6 +33,8 @@ if ! command -v apindex; then
     cd apindex
     cmake . -DCMAKE_INSTALL_PREFIX=/usr
     sudo make install
+    cd ..
+    rm -rf apindex
 fi
 
 apindex .
